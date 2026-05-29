@@ -37,6 +37,9 @@
       filter: drop-shadow(0 0 22px rgba(52,245,255,.4));
     }
     .tag { color: var(--muted); letter-spacing: .26em; text-transform: uppercase; font-size: 12px; margin-top: 8px; }
+    .section-title { font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; font-size: 13px; color: var(--cyan); margin: 30px 4px 14px; display: flex; align-items: center; gap: 12px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--edge), transparent); }
+    .section-title:first-of-type { margin-top: 6px; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
     @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
     .card {
@@ -67,32 +70,47 @@
       <div class="logo">BORDING<br>GAMES</div>
       <div class="tag">spil &middot; samlet ét sted</div>
     </header>
-    <div class="grid" id="grid"></div>
-    <footer>Lavet af Bording &middot; <span id="count"></span> spil</footer>
+    <div id="sections"></div>
+    <footer>Lavet af Bording &middot; <span id="count"></span> projekter</footer>
   </div>
   <script>
     // Edit this list to add/remove games. url is the live GitHub Pages link.
     // Monogram icons (first letter) render identically on every device — no emoji-font dependency.
-    const GAMES = [
-      { name: 'Starweaver', desc: 'Roguelite bullet-hell — væv magi, undvig, knus sværmen.', url: 'https://bordingcode.github.io/starweaver/', c: '#34f5ff' },
-      { name: 'Aegis', desc: 'Græsk-mytologisk tower-defense roguelite.', url: 'https://bordingcode.github.io/aegis/', c: '#ffd166' },
-      { name: 'Mournwood', desc: 'Mørkt deckbuilding-kortspil.', url: 'https://bordingcode.github.io/mournwood/', c: '#9d6bff' },
-      { name: 'Yatzy', desc: 'Den klassiske terningekamp, Bording-stil.', url: 'https://bordingcode.github.io/yatzy/', c: '#5dffb0' },
-      { name: 'Hjernespil', desc: 'En hyggelig samling hjernetræningsspil (Dorthe).', url: 'https://bordingcode.github.io/dorthe-braingames/', c: '#ff4d9d' },
-      { name: 'Dinder', desc: 'Swipe dig frem til din næste opskrift.', url: 'https://bordingcode.github.io/Dinder/', c: '#ffd166' },
-      { name: 'Babynavne', desc: 'Swipe & match babynavne sammen.', url: 'https://bordingcode.github.io/babynames/', c: '#34f5ff' },
+    // Edit these lists to add/remove projects. Two groups: real games, and everything else.
+    const SECTIONS = [
+      { title: 'Spil', items: [
+        { name: 'Starweaver', desc: 'Roguelite bullet-hell — væv magi, undvig, knus sværmen.', url: 'https://bordingcode.github.io/starweaver/', c: '#34f5ff' },
+        { name: 'Aegis', desc: 'Græsk-mytologisk tower-defense roguelite.', url: 'https://bordingcode.github.io/aegis/', c: '#ffd166' },
+        { name: 'Mournwood', desc: 'Mørkt deckbuilding-kortspil.', url: 'https://bordingcode.github.io/mournwood/', c: '#9d6bff' },
+        { name: 'Yatzy', desc: 'Den klassiske terningekamp, Bording-stil.', url: 'https://bordingcode.github.io/yatzy/', c: '#5dffb0' },
+        { name: 'Hjernespil', desc: 'Hyggelig samling hjernetræningsspil (Dorthe).', url: 'https://bordingcode.github.io/dorthe-braingames/', c: '#ff4d9d' },
+      ]},
+      { title: 'Apps & oplevelser', items: [
+        { name: 'Dinder', desc: 'Swipe dig frem til din næste opskrift.', url: 'https://bordingcode.github.io/Dinder/', c: '#ffd166' },
+        { name: 'Babynavne', desc: 'Swipe & match babynavne sammen.', url: 'https://bordingcode.github.io/babynames/', c: '#34f5ff' },
+        { name: 'Podwalk', desc: 'Aarhus Music Walk — byvandring med lyd.', url: 'https://bordingcode.github.io/podwalk/', c: '#9d6bff' },
+        { name: 'Crimpedia', desc: 'Klatrekonkurrencer, atleter & ranglister.', url: 'https://crimpedia.pages.dev/', c: '#5dffb0' },
+        { name: 'Baby Sleep', desc: 'Guide til babysøvn.', url: 'https://bordingcode.github.io/baby-sleep/', c: '#34f5ff' },
+        { name: 'Secret Santa', desc: 'Træk lod til pakkeleg.', url: 'https://bordingcode.github.io/secret-santa/', c: '#ff4d9d' },
+      ]},
     ];
-    const grid = document.getElementById('grid');
-    GAMES.forEach((g) => {
-      const a = document.createElement('a');
-      a.className = 'card'; a.href = g.url; a.style.setProperty('--c', g.c);
-      a.innerHTML = `
-        <span class="ic" style="--c:${g.c}">${g.name[0]}</span>
-        <span class="body"><span class="name" style="--c:${g.c}">${g.name}</span><span class="desc">${g.desc}</span></span>
-        <span class="arrow">›</span>`;
-      grid.appendChild(a);
+    const root = document.getElementById('sections');
+    let total = 0;
+    SECTIONS.forEach((sec) => {
+      const h = document.createElement('div'); h.className = 'section-title'; h.textContent = sec.title; root.appendChild(h);
+      const grid = document.createElement('div'); grid.className = 'grid'; root.appendChild(grid);
+      sec.items.forEach((g) => {
+        total++;
+        const a = document.createElement('a');
+        a.className = 'card'; a.href = g.url; a.style.setProperty('--c', g.c);
+        a.innerHTML = `
+          <span class="ic" style="--c:${g.c}">${g.name[0]}</span>
+          <span class="body"><span class="name" style="--c:${g.c}">${g.name}</span><span class="desc">${g.desc}</span></span>
+          <span class="arrow">›</span>`;
+        grid.appendChild(a);
+      });
     });
-    document.getElementById('count').textContent = GAMES.length;
+    document.getElementById('count').textContent = total;
   </script>
 </body>
 </html>
