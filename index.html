@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bording Games</title>
+  <meta name="description" content="Alle Bording-spil samlet ét sted." />
+  <meta name="theme-color" content="#05030f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05030f; --ink: #eaf2ff; --muted: #9aa6d6;
+      --cyan: #34f5ff; --violet: #9d6bff; --magenta: #ff4d9d; --gold: #ffd166; --green: #5dffb0;
+      --panel: rgba(255,255,255,.04); --edge: rgba(255,255,255,.10);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Rajdhani', system-ui, sans-serif;
+      color: var(--ink); background: var(--bg);
+      min-height: 100svh;
+      padding: calc(env(safe-area-inset-top) + 36px) 20px calc(env(safe-area-inset-bottom) + 48px);
+      background:
+        radial-gradient(120% 80% at 50% 0%, rgba(40,28,90,.55), rgba(5,3,15,.96) 70%),
+        var(--bg);
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 30px; }
+    .logo {
+      font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: .12em;
+      font-size: clamp(30px, 9vw, 52px); line-height: 1;
+      background: linear-gradient(180deg, #c9f6ff 0%, var(--cyan) 42%, var(--violet) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 22px rgba(52,245,255,.4));
+    }
+    .tag { color: var(--muted); letter-spacing: .26em; text-transform: uppercase; font-size: 12px; margin-top: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card {
+      display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit;
+      padding: 16px 18px; border-radius: 18px;
+      background: var(--panel); box-shadow: inset 0 0 0 1px var(--edge);
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .card:active { transform: scale(.97); }
+    .card:hover { background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px var(--c, var(--cyan)), 0 0 24px rgba(52,245,255,.12); }
+    .ic {
+      flex: 0 0 auto; width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.18), rgba(255,255,255,.02));
+      box-shadow: inset 0 0 0 1px var(--edge), 0 0 18px -4px var(--c, var(--cyan));
+    }
+    .body { min-width: 0; }
+    .name { display: block; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: .02em; color: var(--c, var(--ink)); }
+    .desc { display: block; color: var(--muted); font-size: 14px; line-height: 1.35; margin-top: 3px; }
+    .ic { font-family: 'Orbitron', sans-serif; font-weight: 900; color: var(--c, var(--cyan)); }
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 34px; letter-spacing: .04em; }
+    .arrow { margin-left: auto; color: var(--muted); font-size: 20px; flex: 0 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">BORDING<br>GAMES</div>
+      <div class="tag">spil &middot; samlet ét sted</div>
+    </header>
+    <div class="grid" id="grid"></div>
+    <footer>Lavet af Bording &middot; <span id="count"></span> spil</footer>
+  </div>
+  <script>
+    // Edit this list to add/remove games. url is the live GitHub Pages link.
+    // Monogram icons (first letter) render identically on every device — no emoji-font dependency.
+    const GAMES = [
+      { name: 'Starweaver', desc: 'Roguelite bullet-hell — væv magi, undvig, knus sværmen.', url: 'https://bordingcode.github.io/starweaver/', c: '#34f5ff' },
+      { name: 'Aegis', desc: 'Græsk-mytologisk tower-defense roguelite.', url: 'https://bordingcode.github.io/aegis/', c: '#ffd166' },
+      { name: 'Mournwood', desc: 'Mørkt deckbuilding-kortspil.', url: 'https://bordingcode.github.io/mournwood/', c: '#9d6bff' },
+      { name: 'Yatzy', desc: 'Den klassiske terningekamp, Bording-stil.', url: 'https://bordingcode.github.io/yatzy/', c: '#5dffb0' },
+      { name: 'Hjernespil', desc: 'En hyggelig samling hjernetræningsspil (Dorthe).', url: 'https://bordingcode.github.io/dorthe-braingames/', c: '#ff4d9d' },
+      { name: 'Dinder', desc: 'Swipe dig frem til din næste opskrift.', url: 'https://bordingcode.github.io/Dinder/', c: '#ffd166' },
+      { name: 'Babynavne', desc: 'Swipe & match babynavne sammen.', url: 'https://bordingcode.github.io/babynames/', c: '#34f5ff' },
+    ];
+    const grid = document.getElementById('grid');
+    GAMES.forEach((g) => {
+      const a = document.createElement('a');
+      a.className = 'card'; a.href = g.url; a.style.setProperty('--c', g.c);
+      a.innerHTML = `
+        <span class="ic" style="--c:${g.c}">${g.name[0]}</span>
+        <span class="body"><span class="name" style="--c:${g.c}">${g.name}</span><span class="desc">${g.desc}</span></span>
+        <span class="arrow">›</span>`;
+      grid.appendChild(a);
+    });
+    document.getElementById('count').textContent = GAMES.length;
+  </script>
+</body>
+</html>
